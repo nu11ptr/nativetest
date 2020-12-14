@@ -1,2 +1,2 @@
 # nativetest
-A simple test of Graalvm Native Image
+A simple test of Graalvm Native Image using Javafx
