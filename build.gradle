@@ -1,0 +1,61 @@
+plugins {
+    id 'application'
+    id 'scala'
+    id 'org.openjfx.javafxplugin' version '0.0.9'
+    id 'com.gluonhq.client-gradle-plugin' version '0.1.35'
+}
+
+javafx {
+    version = "11.0.2"
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
+repositories {
+    mavenCentral()
+}
+
+def scalaVersion = '2.13.3'
+
+dependencies {
+    // Database
+    implementation "org.scala-lang:scala-library:$scalaVersion"
+    // implementation 'com.h2database:h2:1.4.200'
+    // implementation 'com.typesafe.slick:slick_2.13:3.3.3'
+    // Logging
+    // implementation 'org.slf4j:slf4j-api:1.7.30'
+    // implementation 'ch.qos.logback:logback-classic:1.2.3'
+    // JavaFX additional
+    implementation 'org.controlsfx:controlsfx:11.0.3'
+}
+
+sourceSets {
+    main {
+        scala {
+            srcDirs = ['native/src']
+        }
+        resources {
+            srcDirs = ['native/resources']
+        }
+    }
+}
+
+// Only example I can find on the web for how to use these options!
+// Here: https://github.com/gluonhq/substrate/issues/828
+//
+// Does not work yet: Both H2 and Logback are problems and need "extra help"
+// Example for what Logback might need here: https://github.com/recursivecodes/simple-socket-fn-logger/blob/master/META-INF/native-image/reflect-config.json
+// And for H2 here: https://github.com/rmannibucau/h2graal/blob/master/src/graal/reflect-config.json
+gluonClient {
+  compilerArgs = [
+    "--verbose",
+    "--no-fallback",
+    "--report-unsupported-elements-at-runtime",
+    "--allow-incomplete-classpath"
+  ]
+
+  reflectionList = [
+      "native.ui.MainUI"
+  ]
+}
+
+mainClassName = 'native.ui.Main'

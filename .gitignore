@@ -1,2 +1,9 @@
+*.db
 *.class
 *.log
+.bloop/
+.metals/
+.gradle/
+bin/
+build/
+out/
